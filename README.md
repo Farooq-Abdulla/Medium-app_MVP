@@ -29,12 +29,12 @@ To begin with, our backend will have
  
  3.  Get connection pool URL from Prisma accelerate
 				[https://www.prisma.io/data-platform/accelerate](https://www.prisma.io/data-platform/accelerate)
-	3. Initialize prisma in your project 
+ 3. Initialize prisma in your project 
 				- npm i prisma
 				- npx prisma init
-	4.  Replace `DATABASE_URL` in `.env`with your neonDB connection string.
-	5. Add `DATABASE_URL` as the `connection pool` url in `wrangler.toml` - We are doing this only because we are deploying it in cloudFlare
-	6. Initialize the schema in `schema.prisma`
+ 4.  Replace `DATABASE_URL` in `.env`with your neonDB connection string.
+ 5. Add `DATABASE_URL` as the `connection pool` url in `wrangler.toml` - We are doing this only because we are deploying it in cloudFlare
+ 6. Initialize the schema in `schema.prisma`
 			- Create two models User and Posts
 				
 		
