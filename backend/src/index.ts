@@ -1,6 +1,8 @@
 import { Hono } from 'hono'
 
 const app = new Hono();
+import { cors } from 'hono/cors';
+app.use(cors());
 import userRouter from "./routes/userRouter";
 import blogRouter from "./routes/blogRouter";
 
