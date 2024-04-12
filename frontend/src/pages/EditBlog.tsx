@@ -1,15 +1,16 @@
 import axios from "axios";
-import { useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { BACKEND_URL } from "../config";
-import { useNavigate } from "react-router-dom";
-import { useGetUser } from "../hooks";
+import { useNavigate, useParams } from "react-router-dom";
+import { useBlog, useGetUser } from "../hooks";
 import JoditEditor from 'jodit-react';
 import AppBar from "../components/AppBar";
 import BlogSkeleton from "../components/BlogSkeleton";
 import useAsyncEffect from "use-async-effect";
 
-export default function Publish(){
-    
+export default function EditBlog(){
+    const {id}=useParams();
+    const {blog}= useBlog({id:id||''})
     const [title,setTitle] =useState('');
     const navigate= useNavigate();
     const editor = useRef(null);
@@ -27,6 +28,11 @@ export default function Publish(){
         navigate('/signin');
         }
     },[navigate])
+    useEffect(()=>{
+        setTitle(blog.title);
+        setContent(blog.content);
+    },[blog])
+
     if (loading){
         return <div><BlogSkeleton/></div>
     }
@@ -34,7 +40,7 @@ export default function Publish(){
 
     const handleSubmit=async()=>{
         try {
-            await axios.post(`${BACKEND_URL}/api/v1/blog`,{
+            await axios.put(`${BACKEND_URL}/api/v1/blog/edit/${id}`,{
                 content,
                 title,
             },{
@@ -55,7 +61,7 @@ export default function Publish(){
         <div>
             <AppBar/>
         <div className="max-w-4xl mx-auto mt-8 px-8 py-6 bg-white shadow-lg rounded-lg">
-            <h1 className="text-3xl font-bold mb-8">What are you thinking, {user}?</h1>
+            <h1 className="text-3xl font-bold mb-8">{user}, What do you want to edit ?</h1>
             <div className="mb-8">
                 <input
                     id="title"
@@ -63,7 +69,7 @@ export default function Publish(){
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
                     className="w-full bg-gray-100 border border-gray-300 focus:outline-none focus:border-blue-500 py-3 px-4 mb-4 text-lg rounded-lg placeholder-gray-500"
-                    placeholder="Title"
+                    placeholder={blog.title}
                 />
             </div>
             <div className="mb-8">
@@ -77,8 +83,8 @@ export default function Publish(){
             <div>
                 <button
                     onClick={handleSubmit}
-                    className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-8 rounded-lg focus:outline-none focus:shadow-outline cursor-pointer" >
-                    Publish
+                    className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-8 rounded-lg focus:outline-none focus:shadow-outline cursor-pointer">
+                    Publish Edit
                 </button>
             </div>
         </div>

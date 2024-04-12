@@ -79,6 +79,8 @@ router.post('/', async (c) => {
                 id: true,
                 title: true,
                 content: true,
+                createdAt: true,
+                updatedAt: true,
                 author:{
                     select:{
                         name:true
@@ -95,10 +97,11 @@ router.post('/', async (c) => {
 });
 
 
-router.put("/", async (c) => {
+router.put("/edit/:id", async (c) => {
     try {
         const userId = c.get('userId');
         const prisma = new PrismaClient({ datasourceUrl: c.env.DATABASE_URL }).$extends(withAccelerate());
+        const blogId = Number( c.req.param('id'));
         const body = await c.req.json(); // this is how you get body in HONO
         const { success } = updateBlogInput.safeParse(body);
         if (!success) {
@@ -107,13 +110,14 @@ router.put("/", async (c) => {
         }
         const postUpdated = await prisma.post.update({
             where: {
-                id: body.id
+                id: blogId
             },
             data: {
                 title: body.title,
                 content: body.content,
                 authorId: userId,
                 published: true,
+                
             },
 
         });
@@ -134,9 +138,12 @@ router.get('/bulk', async (c) => {
                 id:true,
                 title:true,
                 content:true,
+                createdAt:true,
+                updatedAt:true,
                 author:{
                     select:{
                         name:true,
+                        id:true,
                     }
                 }
             }
@@ -162,9 +169,12 @@ router.get('/:id', async (c) => {
                 id:true,
                 title:true,
                 content:true,
+                createdAt:true,
+                updatedAt:true,
                 author:{
                     select:{
                         name:true,
+                        id:true,
                     }
                 }
             }

@@ -3,9 +3,10 @@ import React, { Suspense } from 'react';
 const Signup= React.lazy(()=>import("./pages/Signup"));
 const Signin= React.lazy(()=>import("./pages/Signin"));
 const Blog= React.lazy(()=>import("./pages/Blog"));
-const Blogs= React.lazy(()=>import("./pages/Blogs"));
+const Blogs= React.lazy(()=>import("./pages/All_Blogs"));
 const Publish= React.lazy(()=>import("./pages/Publish"));
-import reactLogo from './assets/react.svg'
+const EditBlog= React.lazy(()=>import("./pages/EditBlog"));
+import BlogSkeleton from './components/BlogSkeleton';
 
 
 
@@ -16,11 +17,12 @@ function App() {
     <>
       <BrowserRouter>
         <Routes>
-          <Route path="/signup" element={<Suspense fallback={<img src={reactLogo} alt='loading...'/>}><Signup /></Suspense>} />
-          <Route path="/signin" element={<Suspense fallback={<img src={reactLogo} alt='loading...'/>}><Signin /></Suspense>} />
-          <Route path="/blog/:id" element={<Suspense fallback={<img src={reactLogo} alt='loading...'/>}><Blog /></Suspense>} />
-          <Route path="/blogs" element={<Suspense fallback={<img src={reactLogo} alt='loading...'/>}><Blogs /></Suspense>} />
-          <Route path="/publish" element={<Suspense fallback={<img src={reactLogo} alt='loading...'/>}><Publish /></Suspense>} />
+          <Route path="/signup" element={<Suspense fallback={<div><BlogSkeleton/></div>}><Signup /></Suspense>} />
+          <Route path="/signin" element={<Suspense fallback={<div><BlogSkeleton/></div>}><Signin /></Suspense>} />
+          <Route path="/blog/:id" element={<Suspense fallback={<div><BlogSkeleton/></div>}><Blog /></Suspense>} />
+          <Route path="/blogs" element={<Suspense fallback={<div><BlogSkeleton/></div>}><Blogs /></Suspense>} />
+          <Route path="/publish" element={<Suspense fallback={<div><BlogSkeleton/></div>}><Publish /></Suspense>} />
+          <Route path="/edit/:id" element={<Suspense fallback={<div><BlogSkeleton/></div>}><EditBlog /></Suspense>} />
         </Routes>
       </BrowserRouter>
     </>
