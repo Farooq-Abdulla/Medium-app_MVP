@@ -1,8 +1,18 @@
+import { useBlog } from "../hooks"
+import FullBlog from "../components/FullBlog";
+import { useParams } from "react-router-dom";
 
 
 function Blog() {
+  const {id}= useParams();
+  const {blog, loading}= useBlog({id:id||''});
+  if(loading){
+    return <div>Loading...</div>
+  }
   return (
-    <div>Blog</div>
+    <div>
+      <FullBlog blog={blog}/>
+    </div>
   )
 }
 

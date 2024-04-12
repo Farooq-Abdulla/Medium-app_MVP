@@ -28,7 +28,7 @@ export default function Auth({type}: Type){
             })
             const jwt = res.data.token;
             localStorage.setItem("token", jwt);
-            navigate('/blog')
+            navigate('/blogs')
         } catch (error) {
             navigate(type==="signup"?"/signup":"/signin");
             alert("Try again/ problem with credentials");

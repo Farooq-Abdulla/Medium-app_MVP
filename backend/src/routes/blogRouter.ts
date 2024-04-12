@@ -32,6 +32,31 @@ router.use("/*", async(c,next)=>{
         return c.json({message: "Error while signing in / User already exits"});
     }
 })
+router.get("/getUser", async (c) => {
+    try {
+        const prisma = new PrismaClient({ datasourceUrl: c.env.DATABASE_URL }).$extends(withAccelerate());
+        const user = await prisma.user.findUnique({
+            where: {
+                id: c.get('userId')
+            },
+            select: {
+                id: true,
+                name: true,
+                email: true,
+            }
+        });
+        if (!user) {
+            c.status(403);
+            return c.json({ message: "User not found" });
+        }
+        return c.json(user);
+    } catch (error) {
+        console.log(error);
+        c.status(500);
+        return c.json({ message: "Internal server error" });
+    }
+});
+
 
 router.post('/', async (c) => {
     try {
@@ -49,9 +74,19 @@ router.post('/', async (c) => {
                 content: body.content,
                 authorId: userId,
                 published: true,
+            },
+            select: {
+                id: true,
+                title: true,
+                content: true,
+                author:{
+                    select:{
+                        name:true
+                    }
+                }
             }
         });
-        return c.json({ id: postCreated.id });
+        return c.json({ postCreated });
     } catch (error) {
         console.log("An error occurred:", error);
         c.status(500);
@@ -79,7 +114,8 @@ router.put("/", async (c) => {
                 content: body.content,
                 authorId: userId,
                 published: true,
-            }
+            },
+
         });
         return c.json({ id: postUpdated.id });
     } catch (error) {
@@ -93,7 +129,18 @@ router.put("/", async (c) => {
 router.get('/bulk', async (c) => {
     try {
         const prisma = new PrismaClient({ datasourceUrl: c.env.DATABASE_URL }).$extends(withAccelerate());
-        const posts = await prisma.post.findMany();
+        const posts = await prisma.post.findMany({
+            select:{
+                id:true,
+                title:true,
+                content:true,
+                author:{
+                    select:{
+                        name:true,
+                    }
+                }
+            }
+        });
         return c.json(posts);
     } catch (error) {
         console.log("An error occurred:", error);
@@ -110,16 +157,23 @@ router.get('/:id', async (c) => {
         const post = await prisma.post.findUnique({
             where: {
                 id: paramId
+            },
+            select:{
+                id:true,
+                title:true,
+                content:true,
+                author:{
+                    select:{
+                        name:true,
+                    }
+                }
             }
         });
         if (!post) {
             c.status(404);
             return c.json({ message: "Post not found" });
         }
-        // if(post.authorId!==userId){
-        //     c.status(403);
-        //     return c.json({message: "Access denied / you are not the author of this post"});
-        // }
+        
         return c.json(post);
     } catch (error) {
         console.log("An error occurred:", error); 

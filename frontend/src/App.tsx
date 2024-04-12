@@ -4,6 +4,7 @@ const Signup= React.lazy(()=>import("./pages/Signup"));
 const Signin= React.lazy(()=>import("./pages/Signin"));
 const Blog= React.lazy(()=>import("./pages/Blog"));
 const Blogs= React.lazy(()=>import("./pages/Blogs"));
+const Publish= React.lazy(()=>import("./pages/Publish"));
 import reactLogo from './assets/react.svg'
 
 
@@ -19,6 +20,7 @@ function App() {
           <Route path="/signin" element={<Suspense fallback={<img src={reactLogo} alt='loading...'/>}><Signin /></Suspense>} />
           <Route path="/blog/:id" element={<Suspense fallback={<img src={reactLogo} alt='loading...'/>}><Blog /></Suspense>} />
           <Route path="/blogs" element={<Suspense fallback={<img src={reactLogo} alt='loading...'/>}><Blogs /></Suspense>} />
+          <Route path="/publish" element={<Suspense fallback={<img src={reactLogo} alt='loading...'/>}><Publish /></Suspense>} />
         </Routes>
       </BrowserRouter>
     </>
