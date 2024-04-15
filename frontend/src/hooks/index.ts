@@ -82,26 +82,35 @@ export function useGetUser():{ user: string | undefined; loading: boolean }{
     return {loading,user};
 }
 
-export function useCheckAuthorization(blogAuthorId:Number){
-    const [same, setSame]=useState(false);
+export function useCheckAuthorization(blogAuthorId: number): Promise<boolean> {
+    return new Promise<boolean>(async (resolve, reject) => {
+      try {
+        const res = await axios.get(`${BACKEND_URL}/api/v1/blog/getUser`, {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
+          }
+        });
+        
+        const same = res.data.id === blogAuthorId;
+        resolve(same);
+      } catch (error) {
+        console.log("useCheckAuthorization failed:", error);
+        reject(error);
+      }
+    });
+  }
+
+  export async function checkAuthorization(blogAuthorId: number): Promise<boolean> {
     try {
-        useAsyncEffect(async()=>{
-            const res=await axios.get(`${BACKEND_URL}/api/v1/blog/getUser`,{
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${localStorage.getItem('token')}`
-                }
-            });
-            if(res.data.id===blogAuthorId){
-                setSame(true)
-            }
-            
-        },[blogAuthorId]);
+      return await useCheckAuthorization(blogAuthorId);
     } catch (error) {
-        console.log("useCheckAuthorization failed");
+      console.error("Error checking authorization:", error);
+      return false;
     }
-    return {same};
-}
+  }
+  
+
 
 // export function useEditBlogHook(blogId:Number){
 //     const [loading, setLoading] =useState(true);

@@ -6,6 +6,7 @@ const Blog= React.lazy(()=>import("./pages/Blog"));
 const Blogs= React.lazy(()=>import("./pages/All_Blogs"));
 const Publish= React.lazy(()=>import("./pages/Publish"));
 const EditBlog= React.lazy(()=>import("./pages/EditBlog"));
+const Delete= React.lazy(()=>import("./pages/DeleteBlog"));
 import BlogSkeleton from './components/BlogSkeleton';
 
 
@@ -23,6 +24,7 @@ function App() {
           <Route path="/blogs" element={<Suspense fallback={<div><BlogSkeleton/></div>}><Blogs /></Suspense>} />
           <Route path="/publish" element={<Suspense fallback={<div><BlogSkeleton/></div>}><Publish /></Suspense>} />
           <Route path="/edit/:id" element={<Suspense fallback={<div><BlogSkeleton/></div>}><EditBlog /></Suspense>} />
+          <Route path="/delete/:id" element={<Suspense fallback={<div><BlogSkeleton/></div>}><Delete /></Suspense>} />
         </Routes>
       </BrowserRouter>
     </>

@@ -1,11 +1,11 @@
 import { useNavigate } from "react-router-dom";
-import { Blog, useCheckAuthorization } from "../hooks"
+import { Blog, checkAuthorization, useCheckAuthorization } from "../hooks"
 import AppBar from "./AppBar"
 import Avatar from "./Avatar"
 import Button from "./Button";
 
-export default function FullBlog({blog}:{blog:Blog}){
-    const {same}=useCheckAuthorization(blog.author.id);
+export default async function FullBlog({blog}:{blog:Blog}){
+    const same=await checkAuthorization(blog.author.id);
     const navigate=useNavigate();
     function todaysDate(){
         const isoDateString = blog.createdAt;

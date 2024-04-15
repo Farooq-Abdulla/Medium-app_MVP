@@ -192,6 +192,30 @@ router.get('/:id', async (c) => {
     }
 });
 
+router.delete('/:id', async (c) => {
+    try {
+        const userId = c.get('userId');
+        const prisma = new PrismaClient({ datasourceUrl: c.env.DATABASE_URL }).$extends(withAccelerate());
+        const paramId = Number(c.req.param('id'));
+        console.log("In backedd Server ,, id:", paramId);
+        const postDeleted = await prisma.post.delete({
+            where: {
+                id: paramId
+            }
+        });
+        console.log("In delte backend route");
+        if (!postDeleted) {
+            c.status(404);
+            return c.json({ message: "Post not found" });
+        }
+        return c.json({ message: "Post deleted successfully" });
+    } catch (error) {
+        console.log("An error occurred:", error);
+        c.status(500);
+        return c.json({ message: "Internal server error while deleting the Post" });
+    }
+});
+
 
 
 
