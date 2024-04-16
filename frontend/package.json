@@ -11,12 +11,20 @@
   },
   "dependencies": {
     "@farooq_abdulla/medium-app-common": "^1.0.0",
+    "@upstash/ratelimit": "^1.1.1",
+    "@vercel/kv": "^1.0.1",
+    "ai": "^3.0.22",
     "axios": "^1.6.8",
+    "dotenv": "^16.4.5",
     "flowbite-react": "^0.8.0",
-    "jodit-react": "^4.0.20",
+    "jodit-react": "^4.0.25",
+    "novel": "^0.3.1",
+    "novel-lightweight": "^0.2.1",
+    "openai": "^4.35.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.22.3",
+    "ts-pattern": "^5.1.1",
     "use-async-effect": "^2.2.7"
   },
   "devDependencies": {

@@ -1,18 +1,20 @@
 import axios from "axios";
-import { useRef, useState } from "react"
+import {  useState } from "react"
 import { BACKEND_URL } from "../config";
 import { useNavigate } from "react-router-dom";
 import { useGetUser } from "../hooks";
-import JoditEditor from 'jodit-react';
 import AppBar from "../components/AppBar";
 import BlogSkeleton from "../components/BlogSkeleton";
 import useAsyncEffect from "use-async-effect";
+import { Editor } from "novel-lightweight";
+
+
+
 
 export default function Publish(){
     
     const [title,setTitle] =useState('');
     const navigate= useNavigate();
-    const editor = useRef(null);
     const [content,setContent] =useState('');
     const { user, loading}= useGetUser();
     useAsyncEffect(async()=>{
@@ -30,8 +32,8 @@ export default function Publish(){
     if (loading){
         return <div><BlogSkeleton/></div>
     }
-
-
+    
+    
     const handleSubmit=async()=>{
         try {
             await axios.post(`${BACKEND_URL}/api/v1/blog`,{
@@ -66,12 +68,14 @@ export default function Publish(){
                     placeholder="Title"
                 />
             </div>
-            <div className="mb-8">
-                <JoditEditor
-                    ref={editor}
-                    value={content}
-                    onChange={newContent => setContent(newContent)}
-                    className="bg-gray-100 border border-gray-300 focus:outline-none focus:border-blue-500 py-3 px-4 mb-4 text-lg rounded-lg placeholder-gray-500"
+            <div className="mb-4">
+            <Editor
+                defaultValue={content}
+                disableLocalStorage={true}
+                onUpdate={(editor) => {
+                    setContent(editor?.storage.markdown.getMarkdown());
+                }}
+
                 />
             </div>
             <div>
@@ -88,3 +92,6 @@ export default function Publish(){
     
     
 }
+
+
+// className="bg-gray-100 border border-gray-300 focus:outline-none focus:border-blue-500 py-3 px-4 mb-4 text-lg rounded-lg placeholder-gray-500"

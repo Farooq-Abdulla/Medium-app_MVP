@@ -1,9 +1,9 @@
 import axios from "axios";
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useState } from "react"
 import { BACKEND_URL } from "../config";
 import { useNavigate, useParams } from "react-router-dom";
 import { useBlog, useGetUser } from "../hooks";
-import JoditEditor from 'jodit-react';
+import { Editor } from "novel-lightweight";
 import AppBar from "../components/AppBar";
 import BlogSkeleton from "../components/BlogSkeleton";
 import useAsyncEffect from "use-async-effect";
@@ -13,7 +13,6 @@ export default function EditBlog(){
     const {blog}= useBlog({id:id||''})
     const [title,setTitle] =useState('');
     const navigate= useNavigate();
-    const editor = useRef(null);
     const [content,setContent] =useState('');
     const { user, loading}= useGetUser();
     useAsyncEffect(async()=>{
@@ -73,11 +72,13 @@ export default function EditBlog(){
                 />
             </div>
             <div className="mb-8">
-                <JoditEditor
-                    ref={editor}
-                    value={content}
-                    onChange={newContent => setContent(newContent)}
-                    className="bg-gray-100 border border-gray-300 focus:outline-none focus:border-blue-500 py-3 px-4 mb-4 text-lg rounded-lg placeholder-gray-500"
+            <Editor
+                defaultValue={content}
+                disableLocalStorage={true}
+                onUpdate={(editor) => {
+                    setContent(editor?.storage.markdown.getMarkdown());
+                }}
+                
                 />
             </div>
             <div>
