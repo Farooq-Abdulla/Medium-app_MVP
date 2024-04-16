@@ -29,15 +29,13 @@ To begin with, our backend will have
  
  3.  Get connection pool URL from Prisma accelerate
 				[https://www.prisma.io/data-platform/accelerate](https://www.prisma.io/data-platform/accelerate)
- 3. Initialize prisma in your project 
+3. Initialize prisma in your project 
 				- npm i prisma
 				- npx prisma init
- 4.  Replace `DATABASE_URL` in `.env`with your neonDB connection string.
- 5. Add `DATABASE_URL` as the `connection pool` url in `wrangler.toml` - We are doing this only because we are deploying it in cloudFlare
- 6. Initialize the schema in `schema.prisma`
+4.  Replace `DATABASE_URL` in `.env`with your neonDB connection string.
+5. Add `DATABASE_URL` as the `connection pool` url in `wrangler.toml` - We are doing this only because we are deploying it in cloudFlare
+6. Initialize the schema in `schema.prisma`
 			- Create two models User and Posts
-				
-		
 
     model  User{
 		id  Int  @id  @default(autoincrement())
@@ -83,10 +81,45 @@ To begin with, our backend will have
 15. Test all the routes in Postman
 16.  Now create a module named 'common' which has zod variables and zod types which are to be exported to both frontend and backend
 -- we do this by publishing the module to npm 
-		- `npm i login`
+		- `npm login`
 		- `npm publish --access public`
 
 		--now import into your backend and frontend
 		- `npm i @farooq_abdulla/medium-app-common`  
 
+# Step4 : # Initialize frontend
+
+1. Initialise a react app
+	-`npm create vite@latest`
+	
+2. Initialise tailwind
+		[tailwind_Intialization docs](https://tailwindcss.com/docs/guides/vite)
+	- `npm install -D tailwindcss postcss autoprefixer`
+	`npx tailwindcss init -p`
+	
+3. Install your package
+		-`npm i @farooq_abdulla/medium-app-common`
+4.   Add react-router-dom
+		-`npm i react-router-dom`
+5.  Create SignIn and SignUp pages 
+6. Create functional blog Page 
+7. Make a Publish Page and Edit Page
+8. Used  novel.sh text-editor in Publish Page 
+			- `npm i novel-lightweight`
+			- [novel.sh github link](https://github.com/Ankur-Datta-4/novel-lightweight?tab=readme-ov-file)
+			- Should Integrate AI in text-editor
+9. Added Delete functionality and taken care of Authorization
+
+
+# Step5: # Deployment
+
+ 1. Used CloudFlare Workers for Backend Deployment 
+		-	Used HONO because its easier to deploy in CloudFlare Workers
+		-	`npm run deploy`	
+2.  Used Vercel for frontend
+		- Need to add **vercel.json** in frontend directory to deploy it in vercel
+		
+
  
+
+        {"rewrites": [{ "source": "/(.*)", "destination": "/" }] }
